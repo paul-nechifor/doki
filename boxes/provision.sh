@@ -30,6 +30,7 @@ install_pip_packages() {
 configure_mysql() {
   chkconfig mysqld on
   service mysqld start
+  mysql -u root --password="" -e 'create database doki;'
 }
 
 setup_requirements() {
