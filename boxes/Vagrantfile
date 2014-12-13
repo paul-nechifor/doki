@@ -1,0 +1,15 @@
+Vagrant.configure('2') do |config|
+  vmname = 'dev'
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  config.vm.synced_folder '..', '/vagrant'
+  config.vm.define vmname.to_sym do |box|
+    box.vm.box = 'chef/centos-6.5'
+    box.vm.host_name = vmname
+    box.vm.network 'private_network', ip: '10.10.10.10'
+    box.vm.provision 'shell', path: 'provision.sh'
+    box.vm.provider 'virtualbox' do |v|
+      v.memory = 1024
+      v.cpus = 1
+    end
+  end
+end
