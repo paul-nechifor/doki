@@ -32,7 +32,7 @@ install_pip_packages() {
 configure_mysql() {
   chkconfig mysqld on
   service mysqld start
-  mysql -u root --password="" -e 'create database db;'
+  mysql -u root --password="" -e 'create database if not exists db;'
 }
 
 setup_requirements() {
@@ -53,9 +53,7 @@ setup_project() {
       expect "Username" { send "admin\r"}
       expect "E-mail" { send "admin@example.com\r"}
       expect "Password" { send "admin\r"}
-      expect "Password" { send "admin\r"}
-    } "Migrated" {
-      expect eof
+      expect "Password (again)" { send "admin\r"}
     }
   '
 }
