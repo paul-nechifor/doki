@@ -1,6 +1,7 @@
 #!/bin/bash
 
 packages=(
+  expect
   httpd
   mysql
   mysql-devel
@@ -14,6 +15,7 @@ main() {
   install_pip_packages
   configure_mysql
   setup_requirements
+  setup_project
 }
 
 install_packages() {
@@ -39,6 +41,23 @@ setup_requirements() {
   virtualenv env
   . env/bin/activate
   pip install -r doki/requirements.txt
+}
+
+setup_project() {
+  cd /vagrant/doki
+  . ../env/bin/activate
+  expect -c '
+    spawn ./manage.py syncdb
+    expect "Would you like to create one now" {
+      send "yes\r"
+      expect "Username" { send "admin\r"}
+      expect "E-mail" { send "admin@example.com\r"}
+      expect "Password" { send "admin\r"}
+      expect "Password" { send "admin\r"}
+    } "Migrated" {
+      expect eof
+    }
+  '
 }
 
 main
