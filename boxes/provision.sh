@@ -32,7 +32,7 @@ install_pip_packages() {
 configure_mysql() {
   chkconfig mysqld on
   service mysqld start
-  mysql -u root --password="" -e 'create database doki;'
+  mysql -u root --password="" -e 'create database db;'
 }
 
 setup_requirements() {
@@ -40,11 +40,11 @@ setup_requirements() {
   sudo -u vagrant
   virtualenv env
   . env/bin/activate
-  pip install -r doki/requirements.txt
+  pip install -r requirements/base.txt
 }
 
 setup_project() {
-  cd /vagrant/doki
+  cd /vagrant/src
   . ../env/bin/activate
   expect -c '
     spawn ./manage.py syncdb

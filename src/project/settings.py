@@ -10,7 +10,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'doki',
+        'NAME': 'db',
         'USER': 'root',
         'PASSWORD': '',
     }
