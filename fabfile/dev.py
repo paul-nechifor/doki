@@ -8,7 +8,7 @@ dev_settings = {
 def in_site(f):
     def g():
         with settings(**dev_settings):
-            with cd('/vagrant/src'):
+            with cd('/vagrant/site'):
                 with prefix('. ../env/bin/activate'):
                     f()
     g.__name__, g.__doc__ = f.__name__, f.__doc__

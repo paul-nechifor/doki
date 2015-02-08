@@ -19,10 +19,12 @@ main() {
 }
 
 install_packages() {
-  yum -y update
-  yum -y groupinstall "Development Tools"
-  rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
-  yum -y install ${packages[@]}
+  yum -y shell <<END
+    update
+    groupinstall "Development Tools"
+    install ${packages[@]}
+    run
+END
 }
 
 install_pip_packages() {
@@ -37,25 +39,24 @@ configure_mysql() {
 
 setup_requirements() {
   cd /vagrant
-  sudo -u vagrant
-  virtualenv env
-  . env/bin/activate
-  pip install -r requirements/base.txt
+  sudo su vagrant -c '
+    virtualenv env
+    . env/bin/activate
+    pip install -r requirements/base.txt
+  '
 }
 
 setup_project() {
-  cd /vagrant/src
+  cd /vagrant/site
   . ../env/bin/activate
   expect -c '
     spawn ./manage.py syncdb
-    expect "Would you like to create one now" {
-      send "yes\r"
-      expect "Username" { send "admin\r"}
-      expect "E-mail" { send "admin@example.com\r"}
-      expect "Password" { send "admin\r"}
-      expect "Password (again)" { send "admin\r"}
-    }
+    expect "Would you like to create one now" { send "no\r" }
   '
+  ./manage.py shell <<END
+from django.contrib.auth.models import User
+User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+END
 }
 
 main

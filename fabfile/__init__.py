@@ -3,5 +3,5 @@ from fabric.api import env
 import dev
 
 env.roledefs = {
-    'dev': ['10.10.10.10'],
+    'dev': ['172.16.10.30'],
 }
