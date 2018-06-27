@@ -1,3 +1,7 @@
+# This repository has been moved to [gitlab.com/paul-nechifor/doki](http://gitlab.com/paul-nechifor/doki).
+
+Old readme:
+
 # Doki
 
 A wiki.
